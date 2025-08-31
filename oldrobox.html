@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OldRobox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #2c6cac;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #333;
+            padding: 15px 20px 15px 50px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 400px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification-close {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: #e74c3c;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .header {
+            background: #1a4c82;
+            padding: 10px 0;
+            border-bottom: 2px solid #0f3a66;
+        }
+        
+        .header-container {
+            width: 1000px;
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin-left: 10px;
+            text-shadow: 2px 2px 0 #0f3a66;
+        }
+        
+        .nav {
+            background: #0f3a66;
+            padding: 5px 0;
+            border-bottom: 2px solid #0a2947;
+        }
+        
+        .nav-container {
+            width: 1000px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+        
+        .nav-item a:hover, .nav-item a.active {
+            background: #1a4c82;
+        }
+        
+        .main {
+            flex-grow: 1;
+            padding: 20px 0;
+        }
+        
+        .main-container {
+            width: 1000px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .left-column {
+            flex: 0 0 200px;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .login-box h3 {
+            color: #2c6cac;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .login-links a {
+            color: #2c6cac;
+            text-decoration: none;
+        }
+        
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .center-column {
+            flex: 1;
+        }
+        
+        .featured-games {
+            background: white;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .featured-games h2 {
+            color: #2c6cac;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .game-card {
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-thumb {
+            height: 100px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 12px;
+        }
+        
+        .game-info {
+            padding: 10px;
+        }
+        
+        .game-title {
+            font-weight: bold;
+            color: #2c6cac;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .game-author {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .creator-badge {
+            background: #ff8c00;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .recommended-badge {
+            background: #2ecc71;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .not-recommended-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .right-column {
+            flex: 0 0 200px;
+        }
+        
+        .side-box {
+            background: white;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .side-box h3 {
+            color: #2c6cac;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .news-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .news-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-title {
+            font-size: 14px;
+            color: #2c6cac;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .news-date {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .page {
+            display: none;
+            background: white;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            color: #333;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .page h2 {
+            color: #2c6cac;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page h3 {
+            color: #2c6cac;
+            margin: 20px 0 10px;
+        }
+        
+        .page p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .page ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .page li {
+            margin-bottom: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c6cac;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        .form-button {
+            padding: 10px 20px;
+            background: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .news-author {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .author-name {
+            font-weight: bold;
+            color: #2c6cac;
+            margin-bottom: 3px;
+            text-decoration: none;
+        }
+        
+        .author-name a {
+            color: #2c6cac;
+            text-decoration: none;
+        }
+        
+        .author-name a:hover {
+            text-decoration: underline;
+        }
+        
+        .author-role {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .footer {
+            background: #0f3a66;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 2px solid #0a2947;
+        }
+        
+        .footer-container {
+            width: 1000px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            text-align: center;
+            font-size: 12px;
+            color: #8bb5e7;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .left-column, .right-column {
+                flex: 1;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="beta-notification">
+        <div class="notification-close" id="notification-close"></div>
+        <strong>Внимание!</strong> Регистрация и вход на сайт - это всего лишь визуал. Сайт находится в бета-тестировании и может содержать ошибки.
+    </div>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <rect x="5" y="5" width="30" height="30" rx="5" fill="#ff8c00"/>
+                    <circle cx="15" cy="15" r="5" fill="white"/>
+                    <circle cx="25" cy="15" r="5" fill="white"/>
+                    <path d="M10 25 Q20 35 30 25" stroke="white" stroke-width="2" fill="none"/>
+                </svg>
+                <div class="logo-text">OldRobox</div>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="nav">
+        <div class="nav-container">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#" class="active" data-page="home">Главная</a></li>
+                <li class="nav-item"><a href="#" data-page="games">Игры</a></li>
+                <li class="nav-item"><a href="#" data-page="catalog">Каталог</a></li>
+                <li class="nav-item"><a href="#" data-page="avatars">Аватары</a></li>
+                <li class="nav-item"><a href="#" data-page="forum">Форум</a></li>
+                <li class="nav-item"><a href="#" data-page="help">Помощь</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="main">
+        <div class="main-container">
+            <div class="left-column">
+                <div class="login-box">
+                    <h3>Вход в аккаунт</h3>
+                    <input type="text" class="login-input" placeholder="Логин" id="login-username">
+                    <input type="password" class="login-input" placeholder="Пароль" id="login-password">
+                    <button class="login-button" id="login-btn">Войти</button>
+                    <div class="login-links">
+                        <a href="#" data-page="register">Регистрация</a>
+                        <a href="#" data-page="forgot-password">Забыли пароль?</a>
+                    </div>
+                </div>
+                
+                <div class="side-box">
+                    <h3>Мой аватар</h3>
+                    <div style="text-align: center; color: #777; font-size: 14px;">
+                        Войдите, чтобы увидеть свой аватар
+                    </div>
+                </div>
+                
+                <div class="side-box">
+                    <h3>Онлайн сейчас</h3>
+                    <div style="text-align: center; color: #2c6cac; font-size: 24px; font-weight: bold;" id="online-counter">
+                        126,548
+                    </div>
+                    <div style="text-align: center; color: #777; font-size: 14px;">
+                        игроков онлайн
+                    </div>
+                </div>
+            </div>
+            
+            <div class="center-column">
+                <div class="page active" id="home-page">
+                    <div class="featured-games">
+                        <h2>Популярные игры</h2>
+                        <div class="games-grid">
+                            <div class="game-card" data-game="milbase">
+                                <div class="game-thumb">MilBase Gun PVP</div>
+                                <div class="game-info">
+                                    <div class="game-title">MilBase Gun PVP 12 Players</div>
+                                    <div class="game-author">
+                                        <span class="creator-badge">Создатель OldRobox</span>
+                                    </div>
+                                    <div class="game-stats">
+                                        <span>👤 0</span>
+                                        <span>👍 100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="game-card" data-game="natural-disaster">
+                                <div class="game-thumb">Natural Disaster Survival</div>
+                                <div class="game-info">
+                                    <div class="game-title">Natural Disaster Survival</div>
+                                    <div class="game-author">Автор: Stickmasterluke</div>
+                                    <div class="game-stats">
+                                        <span>👤 20K</span>
+                                        <span>👍 91%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="game-card" data-game="jailbreak">
+                                <div class="game-thumb">Jailbreak</div>
+                                <div class="game-info">
+                                    <div class="game-title">Jailbreak</div>
+                                    <div class="game-author">Автор: Badimo</div>
+                                    <div class="game-stats">
+                                        <span>👤 21.9K</span>
+                                        <span>👍 86%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="game-card" data-game="pizza-place">
+                                <div class="game-thumb">Work at a Pizza Place</div>
+                                <div class="game-info">
+                                    <div class="game-title">Work at a Pizza Place</div>
+                                    <div class="game-author">Автор: Dued1</div>
+                                    <div class="game-stats">
+                                        <span>👤 15.6K</span>
+                                        <span>👍 92%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="game-card" data-game="retrostudio">
+                                <div class="game-thumb">RetroStudio</div>
+                                <div class="game-info">
+                                    <div class="game-title">RetroStudio</div>
+                                    <div class="game-author">Автор: Retro Dev</div>
+                                    <div class="game-stats">
+                                        <span>👤 1.1K</span>
+                                        <span>👍 95%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="game-card" data-game="goingto2014">
+                                <div class="game-thumb">GoingTo2014</div>
+                                <div class="game-info">
+                                    <div class="game-title">GoingTo2014</div>
+                                    <div class="game-author">Автор: SantiX_22</div>
+                                    <div class="game-stats">
+                                        <span>👤 539</span>
+                                        <span>👍 95%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page" id="games-page">
+                    <h2>Все игры</h2>
+                    <p>Здесь вы найдете все доступные игры на OldRobox. Нажмите на интересующую вас игру, чтобы перейти на официальную страницу Roblox.</p>
+                    
+                    <div class="games-grid">
+                        <div class="game-card" data-game="milbase">
+                            <div class="game-thumb">MilBase Gun PVP</div>
+                            <div class="game-info">
+                                <div class="game-title">MilBase Gun PVP 12 Players</div>
+                                <div class="game-author">
+                                    <span class="creator-badge">Создатель OldRobox</span>
+                                </div>
+                                <div class="game-stats">
+                                    <span>👤 0</span>
+                                    <span>👍 100%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="natural-disaster">
+                            <div class="game-thumb">Natural Disaster Survival</div>
+                            <div class="game-info">
+                                <div class="game-title">Natural Disaster Survival</div>
+                                <div class="game-author">Автор: Stickmasterluke</div>
+                                <div class="game-stats">
+                                    <span>👤 20K</span>
+                                    <span>👍 91%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="jailbreak">
+                            <div class="game-thumb">Jailbreak</div>
+                            <div class="game-info">
+                                <div class="game-title">Jailbreak</div>
+                                <div class="game-author">Автор: Badimo</div>
+                                <div class="game-stats">
+                                    <span>👤 21.9K</span>
+                                    <span>👍 86%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="pizza-place">
+                            <div class="game-thumb">Work at a Pizza Place</div>
+                            <div class="game-info">
+                                <div class="game-title">Work at a Pizza Place</div>
+                                <div class="game-author">Автор: Dued1</div>
+                                <div class="game-stats">
+                                    <span>👤 15.6K</span>
+                                    <span>👍 92%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="meepcity">
+                            <div class="game-thumb">MeepCity</div>
+                            <div class="game-info">
+                                <div class="game-title">MeepCity</div>
+                                <div class="game-author">Автор: Alexnewtron</div>
+                                <div class="game-stats">
+                                    <span>👤 783</span>
+                                    <span>👍 82%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="adopt-me">
+                            <div class="game-thumb">Adopt Me!</div>
+                            <div class="game-info">
+                                <div class="game-title">Adopt Me!</div>
+                                <div class="game-author">Автор: DreamCraft</div>
+                                <div class="game-stats">
+                                    <span>👤 102.3K</span>
+                                    <span>👍 80%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="murder-mystery">
+                            <div class="game-thumb">Murder Mystery 2</div>
+                            <div class="game-info">
+                                <div class="game-title">Murder Mystery 2</div>
+                                <div class="game-author">Автор: Nikilis</div>
+                                <div class="game-stats">
+                                    <span>👤 122K</span>
+                                    <span>👍 93%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="retrostudio">
+                            <div class="game-thumb">RetroStudio</div>
+                            <div class="game-info">
+                                <div class="game-title">RetroStudio</div>
+                                <div class="game-author">Автор: Retro Dev</div>
+                                <div class="game-stats">
+                                    <span>👤 1.1K</span>
+                                    <span>👍 95%</span>
+                                </div>
+                                <div class="recommended-badge">рекомендуем</div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="goingto2014">
+                            <div class="game-thumb">GoingTo2014</div>
+                            <div class="game-info">
+                                <div class="game-title">GoingTo2014</div>
+                                <div class="game-author">Автор: SantiX_22</div>
+                                <div class="game-stats">
+                                    <span>👤 539</span>
+                                    <span>👍 95%</span>
+                                </div>
+                                <div class="recommended-badge">рекомендуем</div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="mm1">
+                            <div class="game-thumb">MM1</div>
+                            <div class="game-info">
+                                <div class="game-title">MM1</div>
+                                <div class="game-author">Автор: MiniMissions</div>
+                                <div class="game-stats">
+                                    <span>👤 69</span>
+                                    <span>👍 56%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="the-test">
+                            <div class="game-thumb">The Test [Alpha]</div>
+                            <div class="game-info">
+                                <div class="game-title">The Test [Alpha]</div>
+                                <div class="game-author">Автор: Studio 2000</div>
+                                <div class="game-stats">
+                                    <span>👤 33</span>
+                                    <span>👍 81%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="untitled-game">
+                            <div class="game-thumb">Untitled Game</div>
+                            <div class="game-info">
+                                <div class="game-title">Untitled Game442342342(UPDATE SOON)</div>
+                                <div class="game-author">Автор: canchanyujayenjhunso</div>
+                                <div class="game-stats">
+                                    <span>👤 20</span>
+                                    <span>👍 77%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="forsaken">
+                            <div class="game-thumb">Forsaken</div>
+                            <div class="game-info">
+                                <div class="game-title">Forsaken</div>
+                                <div class="game-author">Автор: Forsaken Dev Team</div>
+                                <div class="game-stats">
+                                    <span>👤 212.1K</span>
+                                    <span>👍 33%</span>
+                                </div>
+                                <div class="not-recommended-badge">не рекомендуем</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page" id="register-page">
+                    <h2>Регистрация аккаунта</h2>
+                    <p>Создайте аккаунт на OldRobox, чтобы получить доступ ко всем возможностям!</p>
+                    
+                    <div class="form-group">
+                        <label for="reg-username">Имя пользователя</label>
+                        <input type="text" id="reg-username" placeholder="Придумайте логин">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-password">Пароль</label>
+                        <input type="password" id="reg-password" placeholder="Придумайте пароль">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="Ваш email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-birthdate">Дата рождения</label>
+                        <input type="date" id="reg-birthdate">
+                    </div>
+                    
+                    <button class="form-button" id="register-btn">Зарегистрироваться</button>
+                </div>
+                
+                <div class="page" id="forgot-password-page">
+                    <h2>Восстановление пароля</h2>
+                    <p>Введите ваш email, и мы вышлем инструкции по восстановлению пароля.</p>
+                    
+                    <div class="form-group">
+                        <label for="reset-email">Email</label>
+                        <input type="email" id="reset-email" placeholder="Ваш email">
+                    </div>
+                    
+                    <button class="form-button" id="reset-btn">Восстановить пароль</button>
+                </div>
+                
+                <div class="page" id="catalog-page">
+                    <h2>error</h2>
+                    <p>error 404</p>
+                    <p>Каталог does not exist</p>
+                </div>
+                
+                <div class="page" id="avatars-page">
+                    <h2>error</h2>
+                    <p>error 404</p>
+                    <p>Аватары does not exist</p>
+                </div>
+                
+                <div class="page" id="forum-page">
+                    <h2>error</h2>
+                    <p>error 404</p>
+                    <p>Форум does not exist</p>
+                </div>
+                
+                <div class="page" id="help-page">
+                    <h2>Помощь</h2>
+                    <p>Здесь вы найдете ответы на часто задаваемые вопросы.</p>
+                    
+                    <h3>Часто задаваемые вопросы</h3>
+                    <p><strong>В: Как создать аккаунт?</strong><br>
+                    О: Нажмите на кнопку "Регистрация" и заполните необходимые данные.</p>
+                    
+                    <p><strong>В: Как играть в игры?</strong><br>
+                    О: Перейдите на вкладку "Игры" и выберите интересующую вас игру.</p>
+                    
+                    <p><strong>В: Как настроить аватар?</strong><br>
+                    О: Перейдите на вкладку "Аватары" для настройки внешнего вида.</p>
+					
+					<p><strong>P.S. Аватары does not exist</strong><br></p>
+                </div>
+                
+                <div class="page" id="about-page">
+                    <h2>О OldRobox</h2>
+                    <p>OldRobox - это ностальгический сайт своего стиля, воссоздающий атмосферу Roblox 2014 года. Мы стремимся вернуть то самое чувство, которое испытывали игроки, когда впервые открыли для себя платформу Roblox.</p>
+                    
+                    <h3>Наша миссия</h3>
+                    <p>Мы хотим подарить нашим пользователям возможность окунуться в прошлое и заново пережить те незабываемые моменты, которые дарил Roblox в 2014 году.</p>
+                    
+                    <h3>Наша команда</h3>
+                    <p>Над OldRobox работает один человек, который обожает Roblox и хочет сохранить память о золотой эре платформы.</p>
+                </div>
+                
+                <div class="page" id="rules-page">
+                    <h2>Правила OldRobox</h2>
+                    <p>Чтобы обеспечить безопасную и приятную атмосферу для всех пользователей, мы просим соблюдать следующие правила:</p>
+                    
+                    <h3>1. Уважение к другим</h3>
+                    <p>Не допускается оскорбление, унижение или преследование других пользователей.</p>
+                    
+                    <h3>2. Запрещённый контент</h3>
+                    <p>За запрещено размещение контента сексуального, насильственного или иного неприемлемого характера.</p>
+                    
+                    <h3>3. Безопасность аккаунтов</h3>
+                    <p>За запрещены попытки взлома или несанкционированного доступа к аккаунтам других пользователей.</p>
+                    
+                    <h3>4. Мошенничество</h3>
+                    <p>Запрещено проведение мошеннических схем или попыток обмана других пользователей.</p>
+                    
+                    <p>Нарушение этих правил может привести к блокировке аккаунта.</p>
+                </div>
+                
+                <div class="page" id="privacy-page">
+                    <h2>Политика конфиденциальности</h2>
+                    <p>В OldRobox мы серьезно относимся к конфиденциальности наших пользователей. Эта политика объясняет, как мы собираем, используем и защищаем вашу личную информацию.</p>
+                    
+                    <h3>Собираемая информация</h3>
+                    <p>Мы можем собирать следующую информацию:</p>
+                    <ul>
+                        <li>Имя пользователя и пароль</li>
+                        <li>Адрес электронной почты</li>
+                        <li>Дата рождения</li>
+                        <li>Данные об использовании платформы</li>
+                    </ul>
+                    
+                    <h3>Использование информации</h3>
+                    <p>Мы используем вашу информацию для:</p>
+                    <ul>
+                        <li>Предоставления и улучшения наших услуг</li>
+                        <li>Обеспечения безопасности аккаунта</li>
+                        <li>Связи с вами по важным вопросам</li>
+                    </ul>
+                    
+                    <h3>Защита информации</h3>
+                    <p>Мы принимаем все необходимые меры для защиты вашей личной информации от несанкционированного доступа.</p>
+                </div>
+                
+                <div class="page" id="news-page">
+                    <h2 id="news-title">Новость</h2>
+                    <div id="news-date" style="color: #777; margin-bottom: 20px;"></div>
+                    <div id="news-content">
+                        <p>Содержание новости...</p>
+                    </div>
+                    
+                    <div class="news-author">
+                        <div class="author-avatar">
+                            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-DC9C090E32524185789B9FDE6FE250D6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="sheilt">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">
+                                <a href="#" id="author-profile-link" target="_blank">sheilt</a>
+                            </div>
+                            <div class="author-role">
+                                <span class="creator-badge">Создатель OldRobox</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="form-button" onclick="showPage('home')" style="margin-top: 20px;">Вернуться на главную</button>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="side-box">
+                    <h3>Новости</h3>
+                    <div class="news-item" data-news="3">
+                        <div class="news-title">Небольшое обновление!</div>
+                        <div class="news-date">31.08.2025</div>
+                    </div>
+                    <div class="news-item" data-news="2">
+                        <div class="news-title">Продолжаем создавать сайт после долгого отсутствия</div>
+                        <div class="news-date">28.08.2025</div>
+                    </div>
+                    <div class="news-item" data-news="1">
+                        <div class="news-title">Начало создания сайта!</div>
+                        <div class="news-date">08.08.2024</div>
+                    </div>
+                </div>
+                
+                <div class="side-box">
+                    <h3>Статистика</h3>
+                    <div style="text-align: center; color: #777; font-size: 14px; margin-bottom: 10px;">
+                        Зарегистрировано пользователей
+                    </div>
+                    <div style="text-align: center; color: #2c6cac; font-size: 24px; font-weight: bold;">
+                        1,245,893
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-nav">
+                <a href="#" data-page="about">О нас</a>
+                <a href="#" data-page="rules">Правила</a>
+                <a href="#" data-page="privacy">Конфиденциальность</a>
+                <a href="#" id="support-link">Поддержка</a>
+            </div>
+            <div class="copyright">
+                © 2025 OldRobox. Все права защищены. Ностальгический проект, не связан с Roblox Corporation и не подлежит ему.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const gameLinks = {
+            'natural-disaster': 'https://www.roblox.com/games/189707',
+            'jailbreak': 'https://www.roblox.com/games/606849621',
+            'pizza-place': 'https://www.roblox.com/games/192800',
+            'meepcity': 'https://www.roblox.com/games/370731277',
+            'adopt-me': 'https://www.roblox.com/games/920587237',
+            'murder-mystery': 'https://www.roblox.com/games/142823291',
+            'retrostudio': 'https://www.roblox.com/games/5846386835',
+            'goingto2014': 'https://www.roblox.com/games/13452956796',
+            'mm1': 'https://www.roblox.com/games/84949392047862',
+            'the-test': 'https://www.roblox.com/games/10558210932',
+            'untitled-game': 'https://www.roblox.com/games/113619806046802',
+            'forsaken': 'https://www.roblox.com/games/18687417158',
+            'milbase': 'https://www.roblox.com/games/86066500135193'
+        };
+
+        const newsData = {
+            1: {
+                title: 'Начало создания сайта!',
+                date: '08.08.2024',
+                content: '<p>Сегодня я начал работу над созданием OldRobox - ностальгического сайта, который вернет нас в 2014 год, золотую эру Roblox!</p><p>Я планирую воссоздать интерфейс и атмосферу того времени.</p>'
+            },
+            2: {
+                title: 'Продолжаем создавать сайт после долгого отсутствия',
+                date: '28.08.2025',
+                content: '<p>Найс. После долгого перерыва я возобновил работу над OldRobox! За это время я исправил множество ошибок и добавил новые функции.</p>'
+            },
+            3: {
+                title: 'Небольшое обновление!',
+                date: '31.08.2025',
+                content: '<p>Сегодня я выпустил небольшое обновление, которое улучшает стабильность работы сайта и добавляет новые возможности навигации.</p><p>Теперь новости стали кликабельными, а не просто текст, который занимал практически весь экран.</p>'
+            }
+        };
+
+        const authorProfileLink = "https://cmdwindows.github.io/profiles/jsheilt";
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            document.querySelectorAll('.nav-item a').forEach(navLink => {
+                navLink.classList.remove('active');
+            });
+            
+            if (pageId === 'home') {
+                document.querySelector('.nav-item a[data-page="home"]').classList.add('active');
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        function showNotification() {
+            const notification = document.getElementById('beta-notification');
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 1000);
+        }
+
+        function hideNotification() {
+            const notification = document.getElementById('beta-notification');
+            notification.classList.remove('show');
+        }
+
+        document.querySelectorAll('[data-page]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const game = this.getAttribute('data-game');
+                window.open(gameLinks[game], '_blank');
+            });
+        });
+
+        document.querySelectorAll('.news-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const newsId = this.getAttribute('data-news');
+                const news = newsData[newsId];
+                
+                if (news) {
+                    document.getElementById('news-title').textContent = news.title;
+                    document.getElementById('news-date').textContent = news.date;
+                    document.getElementById('news-content').innerHTML = news.content;
+                    
+                    document.getElementById('author-profile-link').href = authorProfileLink;
+                    
+                    showPage('news');
+                }
+            });
+        });
+
+        function updateOnlineCounter() {
+            const online = Math.floor(Math.random() * 50000) + 100000;
+            document.getElementById('online-counter').innerText = online.toLocaleString();
+        }
+
+        setInterval(updateOnlineCounter, 60000);
+        updateOnlineCounter();
+
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (username && password) {
+                alert('Вход выполнен успешно! Добро пожаловать, ' + username + '!');
+            } else {
+                alert('Пожалуйста, заполните все поля.');
+            }
+        });
+
+        document.getElementById('register-btn').addEventListener('click', function() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const email = document.getElementById('reg-email').value;
+            const birthdate = document.getElementById('reg-birthdate').value;
+            
+            if (username && password && email && birthdate) {
+                alert('Регистрация прошла успешно! Добро пожаловать в OldRobox, ' + username + '!');
+            } else {
+                alert('Пожалуйста, заполните все поля.');
+            }
+        });
+
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            const email = document.getElementById('reset-email').value;
+            
+            if (email) {
+                alert('Инструкции по восстановлению пароля отправлены на ' + email);
+            } else {
+                alert('Пожалуйста, введите ваш email.');
+            }
+        });
+
+        document.getElementById('support-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open('https://cmdwindows.github.io/bio', '_blank');
+        });
+
+        document.querySelectorAll('.footer-nav a[data-page]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        document.getElementById('notification-close').addEventListener('click', hideNotification);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('author-profile-link').href = authorProfileLink;
+            showNotification();
+        });
+    </script>
+</body>
+</html>
