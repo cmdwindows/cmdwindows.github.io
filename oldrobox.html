@@ -213,7 +213,7 @@
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: transform 0.3s;
-            cursor: pointer;
+            callback: pointer;
         }
         
         .game-card:hover {
@@ -257,6 +257,15 @@
         .creator-badge {
             background: #ff8c00;
             color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .js-badge {
+            background: #f0db4f;
+            color: #323330;
             padding: 2px 5px;
             border-radius: 3px;
             font-size: 10px;
@@ -391,7 +400,7 @@
             color: white;
             border: none;
             border-radius: 3px;
-            cursor: pointer;
+            callback: pointer;
             font-weight: bold;
         }
         
@@ -468,7 +477,7 @@
             color: white;
             text-decoration: none;
             font-size: 14px;
-            cursor: pointer;
+            callback: pointer;
         }
         
         .footer-nav a:hover {
@@ -651,7 +660,7 @@
                 
                 <div class="page" id="games-page">
                     <h2>Все игры</h2>
-                    <p>Здесь вы найдете все доступные игры на OldRobox. Нажмите на интересующую вас игру, чтобы перейти на официальную страницу Roblox.</p>
+                    <p>Здесь вы найдете все доступные игры на OldRobox. Нажмите на интересующую вас игру и начните путешествие.</p>
                     
                     <div class="games-grid">
                         <div class="game-card" data-game="milbase">
@@ -659,7 +668,7 @@
                             <div class="game-info">
                                 <div class="game-title">MilBase Gun PVP 12 Players</div>
                                 <div class="game-author">
-                                    <span class="creator-badge">Создатель OldRobox</span>
+                                    <span class="creator-badge">Автор: Создатель OldRobox</span>
                                 </div>
                                 <div class="game-stats">
                                     <span>👤 0</span>
@@ -817,6 +826,7 @@
                     </div>
                 </div>
                 
+                <!-- Страница регистрации -->
                 <div class="page" id="register-page">
                     <h2>Регистрация аккаунта</h2>
                     <p>Создайте аккаунт на OldRobox, чтобы получить доступ ко всем возможностям!</p>
@@ -857,25 +867,25 @@
                 </div>
                 
                 <div class="page" id="catalog-page">
-                    <h2>error</h2>
-                    <p>error 404</p>
-                    <p>Каталог does not exist</p>
+                    <h2>Warning</h2>
+                    <p>Error 404</p>
+                    <p>This page does not exist.</p>
                 </div>
                 
                 <div class="page" id="avatars-page">
-                    <h2>error</h2>
-                    <p>error 404</p>
-                    <p>Аватары does not exist</p>
+                    <h2>Warning</h2>
+                    <p>Error 404</p>
+                    <p>This page does not exist.</p>
                 </div>
                 
                 <div class="page" id="forum-page">
-                    <h2>error</h2>
-                    <p>error 404</p>
-                    <p>Форум does not exist</p>
+                    <h2>Warning</h2>
+                    <p>Error 404</p>
+                    <p>This page does not exist.</p>
                 </div>
                 
                 <div class="page" id="help-page">
-                    <h2>Помощь</h2>
+                    <h2>Помощь и поддержка</h2>
                     <p>Здесь вы найдете ответы на часто задаваемые вопросы.</p>
                     
                     <h3>Часто задаваемые вопросы</h3>
@@ -887,13 +897,11 @@
                     
                     <p><strong>В: Как настроить аватар?</strong><br>
                     О: Перейдите на вкладку "Аватары" для настройки внешнего вида.</p>
-					
-					<p><strong>P.S. Аватары does not exist</strong><br></p>
                 </div>
                 
                 <div class="page" id="about-page">
                     <h2>О OldRobox</h2>
-                    <p>OldRobox - это ностальгический сайт своего стиля, воссоздающий атмосферу Roblox 2014 года. Мы стремимся вернуть то самое чувство, которое испытывали игроки, когда впервые открыли для себя платформу Roblox.</p>
+                    <p>OldRobox - это ностальгический проект, воссоздающий атмосферу Roblox 2014 года. Мы стремимся вернуть то самое чувство, которое испытывали игроки, когда впервые открыли для себя платформу Roblox.</p>
                     
                     <h3>Наша миссия</h3>
                     <p>Мы хотим подарить нашим пользователям возможность окунуться в прошлое и заново пережить те незабываемые моменты, которые дарил Roblox в 2014 году.</p>
@@ -955,14 +963,14 @@
                     
                     <div class="news-author">
                         <div class="author-avatar">
-                            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-DC9C090E32524185789B9FDE6FE250D6-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="sheilt">
+                            <img src="" alt="" id="news-author-avatar">
                         </div>
                         <div class="author-info">
                             <div class="author-name">
-                                <a href="#" id="author-profile-link" target="_blank">sheilt</a>
+                                <a href="#" id="news-author-link" target="_blank"></a>
                             </div>
                             <div class="author-role">
-                                <span class="creator-badge">Создатель OldRobox</span>
+                                <span id="news-author-badge"></span>
                             </div>
                         </div>
                     </div>
@@ -974,6 +982,10 @@
             <div class="right-column">
                 <div class="side-box">
                     <h3>Новости</h3>
+                    <div class="news-item" data-news="4">
+                        <div class="news-title">Новый разработчик JavaScript</div>
+                        <div class="news-date">31.08.2025</div>
+                    </div>
                     <div class="news-item" data-news="3">
                         <div class="news-title">Небольшое обновление!</div>
                         <div class="news-date">31.08.2025</div>
@@ -1001,6 +1013,7 @@
         </div>
     </main>
     
+    <!-- Футер -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-nav">
@@ -1011,6 +1024,7 @@
             </div>
             <div class="copyright">
                 © 2025 OldRobox. Все права защищены. Ностальгический проект, не связан с Roblox Corporation и не подлежит ему.
+            </div>
             </div>
         </div>
     </footer>
@@ -1036,21 +1050,52 @@
             1: {
                 title: 'Начало создания сайта!',
                 date: '08.08.2024',
-                content: '<p>Сегодня я начал работу над созданием OldRobox - ностальгического сайта, который вернет нас в 2014 год, золотую эру Roblox!</p><p>Я планирую воссоздать интерфейс и атмосферу того времени.</p>'
+                content: '<p>Сегодня я начал работу над созданием OldRobox - ностальгического сайта, который вернет нас в 2014 год, золотую эру Roblox!</p><p>Я планирую воссоздать интерфейс и атмосферу того времени.</p>',
+                author: {
+                    name: 'sheilt',
+                    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-DC9C090E32524185789B9FDE6FE250D6-Png/150/150/AvatarHeadshot/Webp/noFilter',
+                    role: 'Создатель OldRobox',
+                    roleClass: 'creator-badge',
+                    profileLink: 'https://example.com'
+                }
             },
             2: {
                 title: 'Продолжаем создавать сайт после долгого отсутствия',
                 date: '28.08.2025',
-                content: '<p>Найс. После долгого перерыва я возобновил работу над OldRobox! За это время я исправил множество ошибок и добавил новые функции.</p>'
+                content: '<p>Найс. После долгого перерыва я возобновил работу над OldRobox! За это время я исправил множество ошибок и добавил новые функции.</p>',
+                author: {
+                    name: 'sheilt',
+                    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-DC9C090E32524185789B9FDE6FE250D6-Png/150/150/AvatarHeadshot/Webp/noFilter',
+                    role: 'Создатель OldRobox',
+                    roleClass: 'creator-badge',
+                    profileLink: 'https://example.com'
+                }
             },
             3: {
                 title: 'Небольшое обновление!',
                 date: '31.08.2025',
-                content: '<p>Сегодня я выпустил небольшое обновление, которое улучшает стабильность работы сайта и добавляет новые возможности навигации.</p><p>Теперь новости стали кликабельными, а не просто текст, который занимал практически весь экран.</p>'
+                content: '<p>Сегодня я выпустил небольшое обновление, которое улучшает стабильность работы сайта и добавляет новые возможности навигации.</p><p>Теперь новости стали кликабельными, а не просто текст, который занимал практически весь экран.</p>',
+                author: {
+                    name: 'sheilt',
+                    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-DC9C090E32524185789B9FDE6FE250D6-Png/150/150/AvatarHeadshot/Webp/noFilter',
+                    role: 'Создатель OldRobox',
+                    roleClass: 'creator-badge',
+                    profileLink: 'https://example.com'
+                }
+            },
+            4: {
+                title: 'Новый разработчик JavaScript',
+                date: '31.08.2025',
+                content: '<p>Здравствуйте! Я новый разработчик сайта OldRobox. Меня зовут Владислав, или же jklassjklaasjkl. Я буду помогать в реализации JavaScript-функционала, так как создатель sheilt не очень силён в этом направлении.</p><p>Мы будем работать вместе, чтобы сделать сайт максимально удобным и функциональным для всех пользователей. Будем рады вашей поддержке!</p><p>Если у вас есть идеи по улучшению сайта или вы обнаружили какие-то ошибки, пожалуйста, сообщите нам об этом. Снизу сайта есть кнопка "Поддержка".</p>',
+                author: {
+                    name: 'jklassjklaasjkl',
+                    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-FCAA8AAC83A71D8CB640B670114A18B9-Png/150/150/AvatarHeadshot/Webp/noFilter',
+                    role: 'Помощник JavaScript',
+                    roleClass: 'js-badge',
+                    profileLink: 'https://example.com'
+                }
             }
         };
-
-        const authorProfileLink = "https://cmdwindows.github.io/profiles/jsheilt";
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
@@ -1107,7 +1152,12 @@
                     document.getElementById('news-date').textContent = news.date;
                     document.getElementById('news-content').innerHTML = news.content;
                     
-                    document.getElementById('author-profile-link').href = authorProfileLink;
+                    document.getElementById('news-author-avatar').src = news.author.avatar;
+                    document.getElementById('news-author-avatar').alt = news.author.name;
+                    document.getElementById('news-author-link').textContent = news.author.name;
+                    document.getElementById('news-author-link').href = news.author.profileLink;
+                    document.getElementById('news-author-badge').textContent = news.author.role;
+                    document.getElementById('news-author-badge').className = news.author.roleClass;
                     
                     showPage('news');
                 }
@@ -1158,7 +1208,7 @@
 
         document.getElementById('support-link').addEventListener('click', function(e) {
             e.preventDefault();
-            window.open('https://cmdwindows.github.io/bio', '_blank');
+            window.open('https://cmdwindows.github.io', '_blank');
         });
 
         document.querySelectorAll('.footer-nav a[data-page]').forEach(link => {
@@ -1172,7 +1222,6 @@
         document.getElementById('notification-close').addEventListener('click', hideNotification);
 
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('author-profile-link').href = authorProfileLink;
             showNotification();
         });
     </script>
