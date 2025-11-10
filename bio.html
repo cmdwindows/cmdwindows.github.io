@@ -251,9 +251,10 @@
         .light-theme .steam { color: #000000; }
         .dotabuff { color: #D10A0A; }
         .youtube { color: #FF0000; }
+        .twitch { color: #9146FF; }
         .tiktok { color: #ffffff; }
         .light-theme .tiktok { color: #000000; }
-        .twitch { color: #9146FF; }
+        .soundcloud { color: #ff7700; }
         .zangi { color: #0074B7; }
         .link-messenger { color: #0074B7; }
         .github { color: #f5f5f5; }
@@ -371,7 +372,7 @@
                 </div>
                 <div class="bio-line">
                     <span class="bio-label">Age:</span>
-                    <span>??</span>
+                    <span>15</span>
                 </div>
                 <div class="bio-line">
                     <span class="bio-label">City:</span>
@@ -400,7 +401,7 @@
                 </div>
                 <div class="bio-line">
                     <span class="bio-label">Hobbies:</span>
-                    <span>play games(ddracenetwork, wotblitz(eu), scp:cbm, dota, cscz, csgo, rust legacy, survival simulator, half-life), basketball, draw, studying to be a programmer(html,css,powershell,go), composer.</span>
+                    <span>play games(ddracenetwork, wotblitz(eu), scp:cbm, dota, cscz, csgo, rust legacy, survival simulator), basketball, draw, studying to be a programmer(html,rust,powershell), composer.</span>
                 </div>
             </div>
             
@@ -447,13 +448,17 @@
                         <i class="fab fa-youtube youtube"></i>
                         <span>YouTube</span>
                     </a>
+                    <a href="http://www.twitch.tv/sheilt333" target="_blank" class="social-link">
+                        <i class="fab fa-twitch twitch"></i>
+                        <span>Twitch</span>
+                    </a>
                     <a href="http://tiktok.com/@sheiltt" target="_blank" class="social-link">
                         <i class="fab fa-tiktok tiktok"></i>
                         <span>TikTok</span>
                     </a>
-                    <a href="http://www.twitch.tv/sheilt333" target="_blank" class="social-link">
-                        <i class="fab fa-twitch twitch"></i>
-                        <span>Twitch</span>
+                    <a href="https://on.soundcloud.com/gdd627pxMfcUkDUXaP" target="_blank" class="social-link">
+                        <i class="fab fa-soundcloud soundcloud"></i>
+                        <span>SoundCloud</span>
                     </a>
                     <a href="https://services.zangi.com/dl/conversation/1032358153" target="_blank" class="social-link">
                         <i class="fas fa-phone-alt zangi"></i>
@@ -465,7 +470,7 @@
                     </a>
                     <a href="https://github.com/cmdwindows" target="_blank" class="social-link">
                         <i class="fab fa-github github"></i>
-                        <span>GitHub</span>
+                        <span>GitHub (new)</span>
                     </a>
                     <a href="https://gitlab.com/alexandersheilt" target="_blank" class="social-link">
                         <i class="fab fa-gitlab gitlab"></i>
@@ -479,6 +484,7 @@
             <div class="bio-section">
                 <p>Я не состою ни в каком км, ни кого не дефаю, не занимаюсь сваттингом и доксингом. Kasta: 
                     <span class="hashtag" onclick="return false;">#мирный</span>
+                    <span class="hashtag" onclick="return false;">#бывшыйвеличайшийтроль</span>
                 </p>
             </div>
         </div>
@@ -512,16 +518,6 @@
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             
-            body.classList.remove('light-theme');
-            localStorage.setItem('theme', 'dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                body.classList.add('light-theme');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            }
-            
             themeToggle.addEventListener('click', () => {
                 body.classList.toggle('light-theme');
                 
@@ -533,7 +529,13 @@
                     localStorage.setItem('theme', 'dark');
                 }
             });
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
         });
     </script>
 </body>
-</html>
+    </html>
