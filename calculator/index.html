@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator Plus Real Free Crack 2026</title>
+    <title>Calculator Free Version</title>
     <style>
         :root {
             --primary: #2d5a27;
@@ -32,6 +32,109 @@
             justify-content: center;
             padding: 20px;
             color: var(--light);
+            position: relative;
+        }
+
+        .ad-container {
+            position: fixed;
+            top: 0;
+            width: 160px;
+            height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .ad-left {
+            left: 0;
+        }
+
+        .ad-right {
+            right: 0;
+        }
+
+        .ad-content {
+            width: 100%;
+            text-align: center;
+            color: #333;
+        }
+
+        .ad-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .ad-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ad-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .ad-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ad-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .container {
@@ -43,6 +146,7 @@
             padding: 30px;
             box-shadow: var(--shadow);
             border: 1px solid rgba(74, 124, 63, 0.3);
+            z-index: 10;
         }
 
         h1 {
@@ -214,6 +318,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            z-index: 10;
         }
 
         .bio-link {
@@ -252,6 +357,12 @@
             min-height: 20px;
         }
 
+        @media (max-width: 1200px) {
+            .ad-container {
+                display: none;
+            }
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -268,8 +379,32 @@
     </style>
 </head>
 <body>
+    <div class="ad-container ad-left">
+        <button class="ad-close">×</button>
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-content">
+            <div>Ad loading...</div>
+        </div>
+    </div>
+
+    <div class="ad-container ad-right">
+        <button class="ad-close">×</button>
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-content">
+            <div>Ad loading...</div>
+        </div>
+    </div>
+
+    <div class="popup-overlay"></div>
+    <div class="ad-popup">
+        <button class="ad-close">×</button>
+        <div class="ad-label">Sponsored Content</div>
+        <img src="https://radika1.link/2025/11/11/mne_za_reklamu_nahui_nikto_ne_zaplatil034ab75b55cd7d14.png" alt="Advertisement" class="ad-image">
+        <p>Support our sponsors!</p>
+    </div>
+
     <div class="container">
-        <h1>Calculator Plus Crack</h1>
+        <h1>Calculator Free Version</h1>
         
         <div class="input-group">
             <label for="num1">First Number</label>
@@ -320,7 +455,54 @@
             const progressBar = document.querySelector('.progress-bar');
             const progress = document.querySelector('.progress');
             
+            const adContainers = document.querySelectorAll('.ad-container');
+            const adCloseButtons = document.querySelectorAll('.ad-close');
+            const adPopup = document.querySelector('.ad-popup');
+            const popupOverlay = document.querySelector('.popup-overlay');
+            const popupCloseButton = adPopup.querySelector('.ad-close');
+            
             let selectedOperation = null;
+            let adInterval;
+            
+            function initializeAds() {
+                setTimeout(() => {
+                    adContainers.forEach(container => {
+                        const adContent = container.querySelector('.ad-content');
+                        adContent.innerHTML = `
+                            <img src="https://radika1.link/2025/11/11/mne_za_reklamu_nahui_nikto_ne_zaplatil034ab75b55cd7d14.png" alt="Advertisement" class="ad-image">
+                            <p>Special offer just for you!</p>
+                        `;
+                    });
+                }, 2000);
+                
+                adInterval = setInterval(showPopupAd, 10000);
+                
+                setTimeout(showPopupAd, 2000);
+            }
+            
+            function showPopupAd() {
+                adPopup.classList.add('active');
+                popupOverlay.classList.add('active');
+            }
+            
+            function hidePopupAd() {
+                adPopup.classList.remove('active');
+                popupOverlay.classList.remove('active');
+            }
+            
+            adCloseButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const container = this.closest('.ad-container');
+                    if (container) {
+                        container.style.display = 'none';
+                    } else {
+                        hidePopupAd();
+                    }
+                });
+            });
+            
+            popupOverlay.addEventListener('click', hidePopupAd);
             
             operationBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -375,9 +557,33 @@
                     await simulateProgress(80, 95, 4000);
                     
                     progress.style.width = '100%';
-
-                  // это тебе кажится, будет совершенно правильный ответ
-                    showResult('Hello, World!', 'success');
+                    
+                    const num1 = parseFloat(num1Input.value);
+                    const num2 = parseFloat(num2Input.value);
+                    let result;
+                    
+                    switch(selectedOperation) {
+                        case 'add':
+                            result = num1 + num2;
+                            break;
+                        case 'subtract':
+                            result = num1 - num2;
+                            break;
+                        case 'multiply':
+                            result = num1 * num2;
+                            break;
+                        case 'divide':
+                            if (num2 === 0) {
+                                showResult('Error: Division by zero', 'error');
+                                return;
+                            }
+                            result = num1 / num2;
+                            break;
+                        default:
+                            result = 'Invalid operation';
+                    }
+                    
+                    showResult(result.toString(), 'success');
                     
                 } catch (error) {
                     showResult('An error occurred. Please try again.', 'error');
@@ -392,6 +598,7 @@
                 }
             });
             
+            // Function to simulate progress
             function simulateProgress(start, end, duration) {
                 return new Promise(resolve => {
                     const stepTime = 50;
@@ -436,6 +643,8 @@
                 resultDiv.textContent = message;
                 resultDiv.className = type;
             }
+            
+            initializeAds();
         });
     </script>
 </body>
