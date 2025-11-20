@@ -208,6 +208,7 @@
             align-items: center;
             justify-content: center;
             min-height: 200px;
+            cursor: pointer;
         }
         
         .download-card:hover {
@@ -327,6 +328,53 @@
         .footer-links a:hover {
             color: #4CAF50;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #4CAF50;
+        }
+
+        .modal-title {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-text {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
         
         @media (max-width: 768px) {
             .header-content {
@@ -357,6 +405,12 @@
             .footer-content {
                 flex-direction: column;
                 text-align: center;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 20px;
             }
         }
     </style>
@@ -429,19 +483,19 @@
                 Выберите предпочтительный способ загрузки последней версии betatest_0.2
             </p>
             <div class="download-grid">
-                <a href="#" class="download-card card-direct">
+                <a href="https://github.com/cmdwindows/vdshiftfiles/releases/download/vdshift/ShiftForVDbetatest0.2.zip" class="download-card card-direct" target="_blank">
                     <div class="download-icon">📥</div>
                     <div class="download-title">Прямая загрузка</div>
                     <div class="download-desc">Скачайте напрямую с нашего сервера</div>
                 </a>
                 
-                <a href="#" class="download-card card-cloud">
+                <a href="https://cloud.mail.ru/public/vwy6/7RzFsso2f" class="download-card card-cloud" target="_blank">
                     <div class="download-icon">☁️</div>
                     <div class="download-title">Cloud Mail.ru</div>
                     <div class="download-desc">Альтернативное зеркало для загрузки</div>
                 </a>
                 
-                <a href="#" class="download-card card-telegram">
+                <a href="https://t.me/s/sheiltonov/4305" class="download-card card-telegram" target="_blank">
                     <div class="download-icon">✈️</div>
                     <div class="download-title">Telegram</div>
                     <div class="download-desc">Загрузка через Telegram канал</div>
@@ -480,7 +534,6 @@
             </ul>
         </section>
 
-        <!-- About Section -->
         <section id="about" class="section">
             <h2 class="section-title">О программе</h2>
             <div style="text-align: center; max-width: 800px; margin: 0 auto;">
@@ -490,7 +543,7 @@
                     клавиши Shift для непрерывного бега, что значительно улучшает игровой опыт.
                 </p>
                 <p style="margin-bottom: 20px; opacity: 0.9;">
-                    Наша программа используеттехнологии защиты и активации, обеспечивая 
+                    Наша программа использует технологии защиты и активации, обеспечивая 
                     стабильность работы. VDShift регулярно обновляется и совершенствуется 
                     для соответствия самым высоким стандартам качества.
                 </p>
@@ -501,16 +554,76 @@
         </section>
     </div>
 
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">Политика конфиденциальности</h2>
+            <div class="modal-text">
+                <p><strong>Последнее обновление:</strong> Ноябрь 2025</p>
+                <p>Настоящая Политика конфиденциальности регулирует порядок обработки и защиты информации о пользователях, которую может получить VDShift при использовании программы.</p>
+                
+                <h3 style="color: #FF9800; margin: 20px 0 10px;">Собираемая информация</h3>
+                <p>При использовании программы VDShift мы можем собирать следующую информацию:</p>
+                <ul>
+                    <li>Аппаратные идентификаторы для активации программы</li>
+                    <li>Информация о системе (операционная система, версия)</li>
+                    <li>Дата и время использования программы</li>
+                    <li>Информация о версии программы</li>
+                    <li>Статус активации и тип лицензии</li>
+                </ul>
+
+                <h3 style="color: #FF9800; margin: 20px 0 10px;">Цели сбора информации</h3>
+                <p>Собираемая информация используется для следующих целей:</p>
+                <ul>
+                    <li>Активация и верификация лицензий</li>
+                    <li>Защита от несанкционированного использования</li>
+                    <li>Улучшение работы программы</li>
+                    <li>Техническая поддержка пользователей</li>
+                </ul>
+
+                <p>Мы не передаем ваши данные третьим лицам и обеспечиваем их защиту.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">Условия использования</h2>
+            <div class="modal-text">
+                <p><strong>Последнее обновление:</strong> Ноябрь 2025</p>
+                
+                <h3 style="color: #FF9800; margin: 20px 0 10px;">1. Общие положения</h3>
+                <p>VDShift - это проприетарное программное обеспечение. Используя программу, вы соглашаетесь с настоящими Условиями использования.</p>
+
+                <h3 style="color: #FF9800; margin: 20px 0 10px;">2. Лицензия</h3>
+                <p>Программа предоставляется по лицензии, которая дает вам ограниченное право на использование в соответствии с приобретенным типом лицензии.</p>
+
+                <h3 style="color: #FF9800; margin: 20px 0 10px;">3. Ограничения</h3>
+                <p>Запрещается:</p>
+                <ul>
+                    <li>Распространять программу без разрешения</li>
+                    <li>Модифицировать или реверс-инжинирить программу</li>
+                    <li>Использовать программу для незаконных целей</li>
+                    <li>Обходить систему защиты</li>
+                </ul>
+
+                <h3 style="color: #FF9800; margin: 20px 0 10px;">4. Ответственность</h3>
+                <p>Программа предоставляется "как есть". Мы не несем ответственности за любые убытки, вызванные использованием программы.</p>
+            </div>
+        </div>
+    </div>
+
     <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="copyright">
-                    © 2025 <a href="https://sheiltproject.online/urls/bio" class="author-link">sheilt, inc.</a> Все права защищены.
+                    © 2025 <a href="https://sheiltproject.online/urls/bio" class="author-link" target="_blank">sheilt, inc.</a> Все права защищены.
                 </div>
                 <div class="footer-links">
-                    <a href="https://sheiltproject.online/vdshift/privacy">Политика конфиденциальности</a>
-                    <a href="https://sheiltproject.online/vdshift/terms">Условия использования</a>
-                    <a href="https://sheiltproject.online/urls/bio">Контакты</a>
+                    <a href="https://sheiltproject.online/vdshift/privacy" id="privacyLink">Политика конфиденциальности</a>
+                    <a href="https://sheiltproject.online/vdshift/terms" id="termsLink">Условия использования</a>
+                    <a href="https://sheiltproject.online/urls/bio" target="_blank">Контакты</a>
                 </div>
             </div>
         </div>
@@ -530,24 +643,44 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const downloadLinks = {
-                direct: 'https://github.com/cmdwindows/vdshiftfiles/releases/download/vdshift/ShiftForVDbetatest0.2.zip',
-                cloud: 'https://cloud.mail.ru/public/vwy6/7RzFsso2f',
-                telegram: 'https://t.me/s/sheiltonov/4305'
-            };
-            
-            document.querySelector('.card-direct').href = downloadLinks.direct;
-            document.querySelector('.card-cloud').href = downloadLinks.cloud;
-            document.querySelector('.card-telegram').href = downloadLinks.telegram;
-        });
-
         window.addEventListener('scroll', function() {
             const header = document.querySelector('.main-header');
             if (window.scrollY > 100) {
                 header.style.background = 'rgba(0, 0, 0, 0.8)';
             } else {
                 header.style.background = 'rgba(0, 0, 0, 0.4)';
+            }
+        });
+
+        const privacyModal = document.getElementById('privacyModal');
+        const termsModal = document.getElementById('termsModal');
+        const privacyLink = document.getElementById('privacyLink');
+        const termsLink = document.getElementById('termsLink');
+        const closeButtons = document.querySelectorAll('.close');
+
+        privacyLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            privacyModal.style.display = 'block';
+        });
+
+        termsLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            termsModal.style.display = 'block';
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                privacyModal.style.display = 'none';
+                termsModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target === privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            if (e.target === termsModal) {
+                termsModal.style.display = 'none';
             }
         });
     </script>
