@@ -1,11 +1,367 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="1; url=https://sheiltonov.t.me">
-    <title>Перенаправление...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sheiltproject.online / redirect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=JetBrains+Mono:wght@100;400;800&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #030303;
+            --main-accent: #a5b4fc;
+            --glitch-red: #ff3333;
+            --glitch-blue: #33ff33;
+            --scanline-color: rgba(18, 16, 16, 0.5);
+            --glass-bg: rgba(10, 10, 12, 0.65);
+            --border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0;
+            height: 100vh; width: 100vw;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            perspective: 1000px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+        
+        .page-exit {
+            animation: fadeOut 1s forwards;
+            pointer-events: none;
+        }
+        @keyframes fadeOut { to { opacity: 0; filter: blur(10px); } }
+
+        .background-layer {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -5;
+        }
+
+        .background-layer img {
+            width: 100%; height: 100%;
+            object-fit: fill; 
+            filter: grayscale(100%) contrast(1.2) brightness(0.4) blur(3px);
+            opacity: 0.8;
+        }
+
+        .ascii-art-bg {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw; height: 100vh;
+            z-index: -4;
+            display: flex; justify-content: center; align-items: center;
+            pointer-events: none; overflow: hidden;
+            mix-blend-mode: color-dodge; opacity: 0.15;
+        }
+
+        .ascii-art-bg pre {
+            font-size: 6px; line-height: 6px;
+            color: var(--main-accent);
+            white-space: pre; text-align: center;
+            animation: pulse-ascii 4s infinite alternate;
+        }
+
+        @keyframes pulse-ascii {
+            0% { opacity: 0.3; text-shadow: 0 0 5px var(--main-accent); }
+            100% { opacity: 0.8; text-shadow: 0 0 20px var(--glitch-blue); }
+        }
+
+        #matrixCanvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -3; opacity: 0.4; pointer-events: none;
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px; z-index: 100; pointer-events: none;
+        }
+
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, black 140%);
+            z-index: 101; pointer-events: none;
+        }
+
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 99; pointer-events: none; opacity: 0.08;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+        }
+
+        .card-wrapper {
+            position: relative; z-index: 10;
+            transform-style: preserve-3d; transition: transform 0.1s;
+        }
+
+        .card {
+            width: 400px; padding: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; overflow: hidden;
+            outline: 1px solid rgba(255,255,255,0.05); outline-offset: 8px;
+        }
+
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--main-accent), transparent);
+            animation: scan-vertical 3s infinite;
+        }
+
+        @keyframes scan-vertical {
+            0% { top: -100%; } 100% { top: 100%; }
+        }
+
+        .glitch-title {
+            font-size: 38px; font-weight: 800; letter-spacing: 4px;
+            margin-bottom: 20px; position: relative; color: #fff;
+            text-transform: uppercase;
+        }
+
+        .glitch-title::before, .glitch-title::after {
+            content: attr(data-text); position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
+        }
+        .glitch-title::before {
+            color: var(--glitch-red); z-index: -1;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+        .glitch-title::after {
+            color: var(--glitch-blue); z-index: -2;
+            clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .status-text {
+            color: var(--main-accent);
+            font-size: 10px;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .progress-bar {
+            width: 100%; height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 20px; position: relative;
+        }
+        .progress-fill {
+            position: absolute; top: 0; left: 0; height: 100%;
+            background: var(--main-accent);
+            box-shadow: 0 0 10px var(--main-accent);
+            width: 0%;
+            animation: fillProgress 2.5s linear forwards;
+        }
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .sad-text-container { margin-top: 40px; text-align: center; position: relative; }
+
+        .sad-text {
+            font-family: 'Mrs Saint Delafield', cursive;
+            font-size: 25px;
+            color: #ffffff;
+            opacity: 1;
+            transform: rotate(-4deg);
+            text-shadow: 0 0 10px rgba(165, 180, 252, 0.8), 0 0 20px var(--main-accent);
+            letter-spacing: 1px;
+            display: block; 
+            animation: float-text 4s ease-in-out infinite;
+        }
+
+        .sub-text { display: block; font-size: 9px; margin-top: 5px; color: #555; letter-spacing: 1px; }
+
+        .sys-info {
+            margin-top: 25px; width: 100%; display: flex; justify-content: space-between;
+            font-size: 8px; color: #444; border-top: 1px dashed #333; padding-top: 10px;
+        }
+
+        @keyframes float-text {
+            0%, 100% { transform: rotate(-4deg) translateY(0); filter: blur(0.5px); }
+            50% { transform: rotate(-4deg) translateY(-5px); filter: blur(0px); }
+        }
+        @keyframes glitch-anim-1 {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { transform: translate(0); }
+            20% { transform: translate(2px, -2px); }
+            40% { transform: translate(2px, 2px); }
+            60% { transform: translate(-2px, 2px); }
+            80% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        @media (max-width: 600px) {
+            .card { width: 90%; padding: 25px; }
+            .glitch-title { font-size: 32px; }
+        }
+    </style>
 </head>
 <body>
-    <p>Перенаправление...</p>
+
+    <div class="background-layer">
+        <img src="https://s1.radikal.cloud/2026/01/01/IZOBRAZENIEb6d0a10e39814e61.png" alt="bg">
+    </div>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="ascii-art-bg">
+<pre>
+.           .
+      /' \         / `\
+     /   | .---.  |   \
+    |    |/  _  \|    |
+    |    |\   _  /|    |
+     \  /  \  _  /  \  /
+      \ |   `---'   | /
+       `|           |'
+        |           |
+        |  .---.    |
+        \ /  _  \  /
+         |  (_)  |
+         \       /
+   .------`---'------.
+  /                   \
+ |    \___________/    |
+ |     |         |     |
+ |     |         |     |
+  \    |         |    /
+   `---'         `---'
+    SYSTEM  ERROR
+    SYSTEM  ERROR
+    SYSTEM  ERROR
+</pre>
+    </div>
+
+    <div class="noise"></div>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <div class="card-wrapper" id="cardWrapper">
+        <div class="card">
+            
+            <div class="glitch-title" data-text="REDIRECT">REDIRECT</div>
+
+            <div class="status-text">:: TRANSFERRING DATA...</div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="sad-text-container">
+                <span class="sad-text">i love her, but i dont think she loves me</span>
+                <span class="sub-text">© 2022-2026 sheilt, inc.</span>
+            </div>
+
+            <div class="sys-info">
+                <span>UID: 0x992_A</span>
+                <span>TGT: NET_VOID</span>
+                <span>STAT: UNSTABLE</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+		console.info("https://t.me/sheiltonov");
+        const targetUrl = "https://sheiltonov.t.me";
+        const delayBeforeFade = 2200; 
+        const fadeDuration = 800;    
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('page-exit');
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, fadeDuration);
+            }, delayBeforeFade);
+        });
+
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン010101XYZ';
+        const charArray = chars.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let i = 0; i < columns; i++) { drops[i] = 1; }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#a5b4fc'; 
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
+
+        const cardWrapper = document.getElementById('cardWrapper');
+        const body = document.querySelector('body');
+
+        body.addEventListener('mousemove', (e) => {
+            if (body.classList.contains('page-exit')) return;
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25; 
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            cardWrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        const titleElement = document.querySelector('.glitch-title');
+        const originalText = titleElement.innerText;
+        const randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%^&*";
+        
+        let iteration = 0;
+        const interval = setInterval(() => {
+            titleElement.innerText = titleElement.innerText
+                .split("")
+                .map((letter, index) => {
+                    if(index < iteration) { return originalText[index]; }
+                    return randomChars[Math.floor(Math.random() * 43)]
+                })
+                .join("");
+            
+            if(iteration >= originalText.length){ clearInterval(interval); }
+            iteration += 1 / 3;
+        }, 30);
+    </script>
 </body>
 </html>
