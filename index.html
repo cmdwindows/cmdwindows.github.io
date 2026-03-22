@@ -296,10 +296,44 @@
             100% { transform: translate(0); }
         }
 
+        /* tsarvar widget — fixed bottom-right */
+        .cs-widget-block {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            opacity: 0.55;
+            transition: opacity 0.3s, filter 0.3s;
+            filter: brightness(0.7);
+        }
+
+        .cs-widget-block:hover {
+            opacity: 1;
+            filter: brightness(1);
+        }
+
+        .cs-widget-label {
+            font-size: 7px;
+            letter-spacing: 2px;
+            color: #555;
+            text-transform: uppercase;
+            text-align: right;
+            margin-bottom: 5px;
+        }
+
+        .cs-widget-block a[data-tsarvarServerId],
+        .cs-widget-block a[data-tsarvarServerId] * {
+            background: transparent !important;
+        }
+
         @media (max-width: 600px) {
             .card { width: 90%; padding: 25px; }
             .glitch-title { font-size: 32px; }
             .ascii-art-bg { opacity: 0.1; }
+            .cs-widget-block { bottom: 10px; right: 10px; }
         }
 
     </style>
@@ -444,5 +478,21 @@
             }, 30);
         });
     </script>
+    <div class="cs-widget-block">
+        <span class="cs-widget-label">:: MY CS 1.6 SERVER</span>
+        <a href="https://tsarvar.com/servers/counter-strike-1.6/95.215.56.238:27160" data-tsarvarServerId="512731">server sheilt cs1.6</a>
+        <script type="text/javascript" charset="utf-8" src="https://widget.tsarvar.com/load.js?v=2" async></script>
+        <script type="text/javascript">
+            (function(k){(window[k]||(window[k]=[])).push({
+                element:'*[data-tsarvarServerId="512731"]',
+                serverId:512731,
+                serverIp:'95.215.56.238',
+                serverPort:27160,
+                color:'#000000',
+                lang:'en'
+            });})('TsarvarWidgetQueue');
+        </script>
+    </div>
+
 </body>
 </html>
